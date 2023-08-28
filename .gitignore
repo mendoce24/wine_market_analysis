@@ -3,3 +3,4 @@ __pycache__/
 
 # virtual environment
 wine_market_analysis-env/
+.venv
