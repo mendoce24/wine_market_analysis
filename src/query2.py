@@ -17,7 +17,7 @@ cur.execute("""
     FROM
         vintages
     WHERE
-        vintages.price_euros < 20
+        vintages.price_euros BETWEEN 20 AND 30
     ORDER BY
         vintages.ratings_average DESC,
         vintages.ratings_count DESC;
