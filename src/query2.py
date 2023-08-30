@@ -1,3 +1,4 @@
+#This query will show the vintages that are selling between 20 € and 30 € sorted desc on avg rating and amount of ratings
 import sqlite3
 import pandas as pd
 import plotly.express as px

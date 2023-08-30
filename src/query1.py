@@ -1,3 +1,4 @@
+#This query wil return the vintages that are selling below 20 €, sorted desc on avg rating and rating count
 import sqlite3
 import pandas as pd
 import plotly.express as px
@@ -20,7 +21,8 @@ cur.execute("""
         vintages.price_euros < 20
     ORDER BY
         vintages.ratings_average DESC,
-        vintages.ratings_count DESC;
+        vintages.ratings_count DESC
+    LIMIT 2;
 """)
 
 # Fetch the query result
