@@ -61,6 +61,55 @@ st.plotly_chart(fig1, use_container_width=True)
 
 
 cur.execute("""
+            SELECT * FROM 
+            (SELECT w.name, w.ratings_average, w.ratings_count, g.name
+            FROM wines w
+            JOIN regions r ON r.id = w.region_id
+            JOIN countries c ON c.code = r.country_code
+            JOIN most_used_grapes_per_country mg ON mg.country_code = c.code
+            JOIN grapes g ON mg.grape_id = g.id
+            WHERE mg.grape_id = 2 and w.ratings_count > 2000
+            ORDER BY w.ratings_average DESC, w.ratings_count DESC
+            LIMIT 5)
+
+            UNION ALL
+
+            SELECT * FROM 
+            (SELECT w.name, w.ratings_average, w.ratings_count, g.name
+            FROM wines w
+            JOIN regions r ON r.id = w.region_id
+            JOIN countries c ON c.code = r.country_code
+            JOIN most_used_grapes_per_country mg ON mg.country_code = c.code
+            JOIN grapes g ON mg.grape_id = g.id
+            WHERE mg.grape_id = 5 and w.ratings_count > 2000
+            ORDER BY w.ratings_average DESC, w.ratings_count DESC
+            LIMIT 5) 
+
+            UNION ALL
+
+            SELECT * FROM 
+            (SELECT w.name, w.ratings_average, w.ratings_count, g.name
+            FROM wines w
+            JOIN regions r ON r.id = w.region_id
+            JOIN countries c ON c.code = r.country_code
+            JOIN most_used_grapes_per_country mg ON mg.country_code = c.code
+            JOIN grapes g ON mg.grape_id = g.id
+            WHERE mg.grape_id = 10 and w.ratings_count > 2000
+            ORDER BY w.ratings_average DESC, w.ratings_count DESC
+            LIMIT 5)
+            ;
+            """)
+sql_dataTotal = pd.DataFrame(cur.fetchall(), columns=['wine', 'ratings_average', 'ratings_count', 'grape'])
+     
+
+fig2 = px.histogram(sql_dataTotal, x="wine", y="ratings_average", color="grape", marginal="rug",
+                   hover_data=sql_dataTotal.columns, histfunc='avg')
+
+#Plotting the chart
+"## Top 5 wines per grapes (Cabernet Sauvignon, Merlot, Chardonnay) "
+st.plotly_chart(fig2, use_container_width=True)
+
+cur.execute("""
             SELECT w.name, w.ratings_average, w.ratings_count, g.name
             FROM wines w
             JOIN regions r ON r.id = w.region_id
@@ -72,45 +121,12 @@ cur.execute("""
             LIMIT 5
             ;
             """)
-
-# Put it all to a data frame
-sql_data = pd.DataFrame(cur.fetchall(), columns=['wine', 'ratings_average', 'ratings_count', 'grape'])
-
-
-cur.execute("""
-            SELECT w.name, w.ratings_average, w.ratings_count, g.name
-            FROM wines w
-            JOIN regions r ON r.id = w.region_id
-            JOIN countries c ON c.code = r.country_code
-            JOIN most_used_grapes_per_country mg ON mg.country_code = c.code
-            JOIN grapes g ON mg.grape_id = g.id
-            WHERE mg.grape_id = 5 and w.ratings_count > 2000
-            ORDER BY w.ratings_average DESC, w.ratings_count DESC
-            LIMIT 5
-            ;
-            """)
 sql_data2 = pd.DataFrame(cur.fetchall(), columns=['wine', 'ratings_average', 'ratings_count', 'grape'])
 
-cur.execute("""
-            SELECT w.name, w.ratings_average, w.ratings_count, g.name
-            FROM wines w
-            JOIN regions r ON r.id = w.region_id
-            JOIN countries c ON c.code = r.country_code
-            JOIN most_used_grapes_per_country mg ON mg.country_code = c.code
-            JOIN grapes g ON mg.grape_id = g.id
-            WHERE mg.grape_id = 10 and w.ratings_count > 2000
-            ORDER BY w.ratings_average DESC, w.ratings_count DESC
-            LIMIT 5
-            ;
-            """)
-sql_data3 = pd.DataFrame(cur.fetchall(), columns=['wine', 'ratings_average', 'ratings_count', 'grape'])
-     
-sql_dataTotal = pd.concat([sql_data,sql_data2, sql_data3])
 
-fig2 = px.histogram(sql_dataTotal, x="wine", y="ratings_average", color="grape", marginal="rug",
-                   hover_data=sql_dataTotal.columns, histfunc='avg')
+fig4 = px.histogram(sql_data2, x="wine", y="ratings_average", color="grape", marginal="rug",
+                   hover_data=sql_data2.columns)
 
 #Plotting the chart
-"## Top 5 wines with (Cabernet Sauvignon, Merlot, Chardonnay) grapes"
-st.plotly_chart(fig2, use_container_width=True)
-
+"## Wines with grapes Cabernet Sauvignon"
+st.plotly_chart(fig4, use_container_width=True)
