@@ -112,7 +112,7 @@ def query_top5_wines_cabernet_sauvignon():
 
 # Streamlit app
 def main():
-    st.set_page_config(page_title='Vivino market analysis', page_icon=':fire:', layout='wide')
+    st.set_page_config(page_title='Vivino market analysis', page_icon=':wine_glass:', layout='wide')
     st.title("Vivino market analysis")
     st.subheader('By César, Fré and Sam')
     # Select query
