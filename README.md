@@ -37,9 +37,9 @@ So Argentininans like wine, wine consumption is growing but we do not have a lot
 
 
 ### Deployment
-- To have a clearer view of the data presented, it will be shown in `src/appy.py` application launched in `Streamlit` which shows the different questions presented by Vivino and the visualization and response presented by the working group:
-
-
+- To have a clearer view of the data presented, it will be shown in `src/appy.py` application launched in `Streamlit` which shows the different questions presented by Vivino and the visualization and response presented by the working group.
+- In our streamlit App we can see all the visualization of the data taken to carry out our analysis: 
+[Streamlit App](https://winemarketanalysis-xjmp4wjoejjgmzdcgdfq9b.streamlit.app/)
 
 ## Timeline
 
