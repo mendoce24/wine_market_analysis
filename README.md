@@ -23,14 +23,17 @@ As a result of our analysis, browsing the database provided, we were able to obs
 
 - To highlight 10 wines to increase the sales, we decided to used a list with the most affordable wines with a good score, which vintages are in the top list of the ranking.
 
-- We have a marketing budget for this year. Which country should we To prioritise the marketing in one country, argentina is going to the best option becouse because even though it does not have a large number of registered users, its consumption of algohol has been increasing year after year, in addition, Argentine wines are some of the best ranked on the market.
-
+- We have a marketing budget for this year. Which country should we To prioritise the marketing in one country, argentina is going to the best option becouse because even though it does not have a large number of registered users, its consumption of algohol has been increasing year after year, in addition, `Argentine` wines are some of the best ranked on the market. 
+Currently only 1,37 % of Argentininans uses Vivino, so there's a lot of room to grow in this country of 46 million, a sizeable population.
+And Argentininans like wine: they are only 7th when it comes to yearly wine consumption, but the wine consumption grew by 6,3 percent in 2019 alone and the Compound annual growth rate (CAGR) is 23,90 percent whereas CAGR is in decline in most countries.
+So Argentininans like wine, wine consumption is growing but we do not have a lot Argentininan Vivino users yet.
+![FocusOnArgentina](/output/FocusOnArgentina.png)
 - If we take into account the wines with the keywords `(coffee, toast, green apple, cream, citrus)` We cant get only 16 wines which have this combination, but more peopel think that the `Brut Champagne` have been more identificated with those keywords.
 
 - Taking (`Cabernet Sauvignon`, `Merlot`, `Chardonnay`) like the 3 most common grapes all over the world. We selected wines that were produced in these countries in which the top 3 grapes are grown.
 
 - Taking the `average rating wines` for each country we can find that `Israel` is the country leaderboard with `4.5` rating, but with an other `average rating` taking from `vintages` we can find that `Romania` is the country leaderboard.
-
+![FocusOnArgentina](/output/CountryLeaderboard.png)
 
 
 ### Deployment
