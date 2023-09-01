@@ -4,7 +4,7 @@ import plotly.express as px
 import streamlit as st
 
 # Connect to the SQLite database
-conn = sqlite3.connect(r'C:\Users\samve\OneDrive\0BeCode\repos\wine_market_analysis\data\vivino.db')
+conn = sqlite3.connect(r'../data/vivino.db')
 cursor = conn.cursor()
 
 # Query functions
@@ -110,7 +110,7 @@ def query_top5_wines_cabernet_sauvignon():
 def main():
     st.set_page_config(page_title='Vivino market analysis', page_icon=':wine_glass:', layout='wide')
     # Title
-    st.markdown("""<h1 style='text-align: center; margin-bottom: 100px;'>Vivino Market Analysis</h1>""", unsafe_allow_html=True)
+    st.markdown("""<h1 style='text-align: center; margin-bottom: 50px;'>Vivino Market Analysis</h1>""", unsafe_allow_html=True)
         
     # Select query
     query_option = st.sidebar.selectbox("Query selection:", ["Highlight 10 wines", "Wines with taste keywords", "Top 5 wines for top 3 grapes", "Top 5 wines with Cabernet Sauvignon"])
