@@ -3,12 +3,10 @@ import pandas as pd
 import plotly.express as px
 import streamlit as st
 
-
-
-
 # Connect to the SQLite database
 conn = sqlite3.connect(r'C:\Users\samve\OneDrive\0BeCode\repos\wine_market_analysis\data\vivino.db')
 cursor = conn.cursor()
+
 # Query functions
 def query_highlight_10_wines():
     query = """
@@ -108,30 +106,32 @@ def query_top5_wines_cabernet_sauvignon():
     """
     return conn.execute(query).fetchall()
 
-
-
 # Streamlit app
 def main():
     st.set_page_config(page_title='Vivino market analysis', page_icon=':wine_glass:', layout='wide')
-    st.title("Vivino market analysis")
-    st.subheader('By César, Fré and Sam')
+    # Title
+    st.markdown("""<h1 style='text-align: center; margin-bottom: 100px;'>Vivino Market Analysis</h1>""", unsafe_allow_html=True)
+        
     # Select query
-    query_option = st.selectbox("Select Query", ["Highlight 10 wines", "Wines with taste keywords", "Top 5 wines for top 3 grapes", "Top 5 wines with Cabernet Sauvignon"])
+    query_option = st.sidebar.selectbox("Query selection:", ["Highlight 10 wines", "Wines with taste keywords", "Top 5 wines for top 3 grapes", "Top 5 wines with Cabernet Sauvignon"])
     
     if query_option == "Highlight 10 wines":
         result = query_highlight_10_wines()
         # Convert the result to a DataFrame
         columns = ['id', 'vintage_name', 'ratings_average', 'year', 'price_euros', 'ratings_count', 'url']
         df = pd.DataFrame(result, columns=columns)
-        st.write('# This plot shows the selection of 10 wines to highlight to increase sales.')
+        st.markdown("""<p style='text-align: center; font-size: medium;'>This plot shows the selection of 10 wines to highlight to increase sales.</p>""", unsafe_allow_html=True)
         # Create a Plotly visualization
-        fig = px.bar(df, x='vintage_name', y='ratings_average', title=f'Best 10 wines to increas sales: {query_option}')
-        st.plotly_chart(fig)
+        fig = px.bar(df, x='vintage_name', y='ratings_average')
+        st.dataframe(df)
+        st.plotly_chart(fig, use_container_width=True)
     elif query_option == "Wines with taste keywords":
         result = query_wines_with_taste_keywords()
          # Convert the result to a DataFrame
         columns = ['name_wine', 'group_name', 'count']
         df = pd.DataFrame(result, columns=columns)
+        st.header('Wines that have all identified primary keywords provided in the data.')
+        st.header('Conclusion is that this mainly serves for "Brute Champagne" wines')
         fig1 = px.histogram(df, x="name_wine", y="count", color="group_name", marginal="rug",
                    hover_data=df.columns)
         #Plotting the chart
@@ -141,6 +141,7 @@ def main():
          # Convert the result to a DataFrame
         columns = ['wine', 'ratings_average', 'ratings_count', 'grape']
         df = pd.DataFrame(result, columns=columns)
+        st.header('The 5 best rated wines, based on the top 3 most common grapes gloabally.')
         fig2 = px.histogram(df, x="wine", y="ratings_average", color="grape", marginal="rug",
                    hover_data=df.columns, histfunc='avg')
         #Plotting the chart
@@ -150,15 +151,18 @@ def main():
          # Convert the result to a DataFrame
         columns = ['wine', 'ratings_average', 'ratings_count', 'grape']
         df = pd.DataFrame(result, columns=columns)
+        st.header('This is specially for our VIP client.')
+        st.header('It shows our selection of the top 5 recommended wines of "Cabernet Sauvignon".')
         fig4 = px.histogram(df, x="wine", y="ratings_average", color="grape", marginal="rug",
                    hover_data=df.columns)
         #Plotting the chart
         st.plotly_chart(fig4, use_container_width=True)
 
+    # Small text at the bottom
+    st.markdown("""<p style='text-align: right; font-size: small;'>By César, Fré and Sam</p>""", unsafe_allow_html=True)
 
-
-# Close the database connection
-#conn.close()
+    # Close the database connection
+    conn.close()
 
 if __name__ == '__main__':
     main()
