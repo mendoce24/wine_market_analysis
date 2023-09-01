@@ -8,17 +8,18 @@ conn = sqlite3.connect(r'../data/vivino.db')
 cursor = conn.cursor()
 
 # Query functions
-def query_highlight_10_wines():
+def query_highlight_10_wines(min_ratings, max_price, count):
     query = """
     SELECT v.id, v.name AS vintage_name, v.ratings_average, v.year, v.price_euros, v.ratings_count, w.url
     FROM vintages AS v
     JOIN wines AS w ON v.wine_id = w.id
     JOIN regions AS r ON w.region_id = r.id
-    WHERE (v.ratings_average >= 4.4 AND v.price_euros < 20) OR (v.ratings_average >= 4.4 AND v.price_euros BETWEEN 20 AND 50 AND v.ratings_count > 1000 AND v.year != 'N.V.')
-    ORDER BY v.year DESC
+    WHERE (v.ratings_average >= ? AND v.price_euros < ? AND v.price_discounted_from IS NULL)
+        OR (v.ratings_average >= ? AND v.price_euros BETWEEN 20 AND ? AND v.ratings_count > ? AND v.year != 'N.V.' AND v.price_discounted_from IS NULL)
+    ORDER BY v.price_euros DESC
     LIMIT 10;
     """
-    return conn.execute(query).fetchall()
+    return conn.execute(query, (min_ratings, max_price, min_ratings, max_price, count)).fetchall()
 
 def query_wines_with_taste_keywords():
     query = """
@@ -110,21 +111,23 @@ def query_top5_wines_cabernet_sauvignon():
 def main():
     st.set_page_config(page_title='Vivino market analysis', page_icon=':wine_glass:', layout='wide')
     # Title
-    st.markdown("""<h1 style='text-align: center; margin-bottom: 50px;'>Vivino Market Analysis</h1>""", unsafe_allow_html=True)
+    st.markdown("""<h1 style='text-align: center; margin-bottom: 50px; margin-top: 10px;'>Vivino Market Analysis</h1>""", unsafe_allow_html=True)
         
     # Select query
-    query_option = st.sidebar.selectbox("Query selection:", ["Highlight 10 wines", "Wines with taste keywords", "Top 5 wines for top 3 grapes", "Top 5 wines with Cabernet Sauvignon"])
+    query_option = st.sidebar.selectbox("Query selection:", ["Highlight 10 wines", "Wines with taste keywords", "Top 5 wines for top 3 grapes", "Top 5 wines with Cabernet Sauvignon", "Country Leaderboards", "Focus on Argentina"])
     
     if query_option == "Highlight 10 wines":
-        result = query_highlight_10_wines()
-        # Convert the result to a DataFrame
+        # Add sliders
+        count = st.slider('Minimum Ratings Count', min_value=0.0, max_value=50000.0, step=100.0, value=1000.0)
+        min_ratings = st.slider('Minimum Ratings Average', min_value=0.0, max_value=5.0, step=0.1, value=4.0)
+        max_price = st.slider('Maximum Price (Euros)', min_value=0, max_value=100, step=1, value=50)
+        result = query_highlight_10_wines(min_ratings, max_price, count)
+        # Convert the result to a DataFrame and create a new Plotly visualization
         columns = ['id', 'vintage_name', 'ratings_average', 'year', 'price_euros', 'ratings_count', 'url']
         df = pd.DataFrame(result, columns=columns)
-        st.markdown("""<p style='text-align: center; font-size: medium;'>This plot shows the selection of 10 wines to highlight to increase sales.</p>""", unsafe_allow_html=True)
-        # Create a Plotly visualization
+        st.markdown("""<p style='text-align: center; font-size: medium;'>This table is the selection of 10 wines to highlight and increase sales.</p>""", unsafe_allow_html=True)
         fig = px.bar(df, x='vintage_name', y='ratings_average')
         st.dataframe(df)
-        st.plotly_chart(fig, use_container_width=True)
     elif query_option == "Wines with taste keywords":
         result = query_wines_with_taste_keywords()
          # Convert the result to a DataFrame
@@ -157,7 +160,14 @@ def main():
                    hover_data=df.columns)
         #Plotting the chart
         st.plotly_chart(fig4, use_container_width=True)
-
+    elif query_option == "Country Leaderboards":
+        st.header("Country Leaderboards")
+        image_path = r'../output/CountryLeaderboard.png'
+        st.image(image_path, use_column_width=True)
+    elif query_option == "Focus on Argentina":
+        st.header("Country Leaderboards")
+        image_path = r'../output/FocusOnArgentina.png'
+        st.image(image_path, use_column_width=True)
     # Small text at the bottom
     st.markdown("""<p style='text-align: right; font-size: small;'>By César, Fré and Sam</p>""", unsafe_allow_html=True)
 
