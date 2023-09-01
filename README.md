@@ -51,7 +51,7 @@ presentation in September 01, 2023.
 
 The project was made by:
 
-- Team Leader (Data Engineer): César E. Mendoza V. [LinkedIn](https://www.linkedin.com/in/mendoce24/) | [GitHub](https://github.com/mendoce24)
+- Team Lead (Data Engineer): César E. Mendoza V. [LinkedIn](https://www.linkedin.com/in/mendoce24/) | [GitHub](https://github.com/mendoce24)
 - Data Analyst: Fré Van Oers [LinkedIn](https://www.linkedin.com/in/frevanoers/) | [GitHub](https://github.com/DeFre)
 - Data Engineer:  Sam Valdeman [LinkedIn](https://www.linkedin.com/in/sam-veldeman-b0307b233/) | [GitHub](https://github.com/Sam-Veldeman)
 
